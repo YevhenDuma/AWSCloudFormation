@@ -1,0 +1,17 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "AWS CloudFormation MyBB SNS template.",
+
+  "Resources" : {
+    "MyBBSNSTopic" : {
+      "Type" : "AWS::SNS::Topic",
+      "Properties" : {
+        "Subscription" : [ {
+          "Endpoint" : "yevhen.duma@gmail.com",
+          "Protocol" : "email"
+        } ]
+      }
+    }
+  }
+}

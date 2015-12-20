@@ -1,0 +1,146 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "AWS CloudFormation MyBB RDS template.",
+
+  "Parameters" : {
+    "RDSSubnetA" : {
+      "Description" : "RDS Subnet in AZ A",
+      "Type" : "String",
+      "Default" : "subnet-5e2b283b"
+    },
+    "RDSSubnetB" : {
+      "Description" : "RDS Subnet in AZ B",
+      "Type" : "String",
+      "Default" : "subnet-26eacc51"
+    },
+    "PrivateSubnet" : {
+      "Description" : "PrivateSubnet",
+      "Type" : "String",
+      "Default" : "10.0.8.0/24"
+    },    
+    "VPC" : {
+      "Description" : "VPC",
+      "Type" : "String",
+      "Default" : "vpc-c096a9a5"
+    },
+    "SNSTopic" : {
+      "Description" : "SNS Topic",
+      "Type" : "String",
+      "Default" : "arn:aws:sns:us-west-2:328869784224:MyBB-MyBBSNSTopic-1IEW2NF9OOYHM"
+    },    
+    "DBName" : {
+      "Description" : "DBName",
+      "Type" : "String",
+      "Default" : "mybb"
+    },
+    "DBEngine" : {
+      "Description" : "DBEngine",
+      "Type" : "String",
+      "Default" : "MySQL"
+    },
+    "DBMultiAZ" : {
+      "Description" : "DBMultiAZ",
+      "Type" : "String",
+      "Default" : "false"
+    },
+    "DBUser" : {
+      "Description" : "DBUser",
+      "Type" : "String",
+      "Default" : "mybbadmin"
+    },
+    "DBPassword" : {
+      "Description" : "DBPassword",
+      "Type" : "String",
+      "Default" : "WiWrakHorc8"
+    },
+    "DBClass" : {
+      "Description" : "DBClass",
+      "Type" : "String",
+      "Default" : "db.t2.micro"
+    },
+    "DBAllocatedStorage" : {
+      "Description" : "DBAllocatedStorage",
+      "Type" : "Number",
+      "Default" : "5"
+    }
+  },
+
+  "Resources" : {
+  "DBSubnetGroup" : {
+      "Type" : "AWS::RDS::DBSubnetGroup",
+      "Properties" : {
+        "DBSubnetGroupDescription" : "Subnets available for the RDS DB Instance",
+        "SubnetIds" : [{ "Ref" : "RDSSubnetA" }, { "Ref" : "RDSSubnetB" }]
+      }
+    },
+  "DBVPCSecurityGroup" : {
+        "Type" : "AWS::EC2::SecurityGroup",
+        "Properties" :
+        {
+           "GroupDescription" : "Security group for RDS DB Instance.",
+           "VpcId" : { "Ref" : "VPC" },
+            "SecurityGroupIngress": [
+              {
+                "IpProtocol": "tcp",
+                "CidrIp": { "Ref" : "PrivateSubnet" },
+                "FromPort": "3306",
+                "ToPort": "3306"
+              }
+            ] 
+        }
+    },
+  "DBInstance" : {
+    "Type": "AWS::RDS::DBInstance",
+      "Properties": {
+        "DBName"            : { "Ref" : "DBName" },
+        "Engine"            : { "Ref" : "DBEngine" },
+        "MultiAZ"           : { "Ref" : "DBMultiAZ" },
+        "MasterUsername"    : { "Ref" : "DBUser" },
+        "DBInstanceClass"   : { "Ref" : "DBClass" },
+        "AllocatedStorage"  : { "Ref" : "DBAllocatedStorage" },
+        "MasterUserPassword": { "Ref" : "DBPassword" },
+        "DBSubnetGroupName" : { "Ref" : "DBSubnetGroup" },
+        "VPCSecurityGroups" : [{ "Ref" : "DBVPCSecurityGroup" }]
+      }
+    },
+    "CPUAlarmDB" : {
+      "Type" : "AWS::CloudWatch::Alarm",
+      "Properties" : {
+        "AlarmDescription": "MyBB DB CPU Utilization",
+        "MetricName": "CPUUtilization",
+        "Namespace": "AWS/RDS",
+        "Statistic": "Average",
+        "Period": "300",
+        "EvaluationPeriods": "2",
+        "Threshold": "70",
+        "AlarmActions": [ { "Ref" : "SNSTopic" }],
+        "Dimensions": [{ "Name": "DBInstanceIdentifier",
+                         "Value": { "Ref": "DBInstance" } }],
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold"
+      }
+    },
+    "LowFreeableSpaceAlarmDB" : {
+      "Type" : "AWS::CloudWatch::Alarm",
+      "Properties" : {
+        "AlarmDescription": "MyBB DB Low Freeable Space",
+        "MetricName": "FreeStorageSpace",
+        "Namespace": "AWS/RDS",
+        "Statistic": "Average",
+        "Period": "3600",
+        "EvaluationPeriods": "4",
+        "Threshold": "1048576000",
+        "AlarmActions": [ "SNSTopic" ],
+        "Dimensions": [{ "Name": "DBInstanceIdentifier",
+                         "Value": { "Ref": "DBInstance" } }],
+        "ComparisonOperator": "LessThanOrEqualToThreshold"
+      }
+    }
+  },
+    "Outputs" : {
+    "DNSName": {
+      "Description" : "DNS name for database",
+      "Value" : { "Fn::GetAtt": [ "DBInstance", "Endpoint.Address" ] }
+    }
+  }
+}
