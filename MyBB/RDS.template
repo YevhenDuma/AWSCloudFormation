@@ -130,7 +130,7 @@
         "Period": "3600",
         "EvaluationPeriods": "4",
         "Threshold": "1048576000",
-        "AlarmActions": [ "SNSTopic" ],
+        "AlarmActions": [ { "Ref" : "SNSTopic" }],
         "Dimensions": [{ "Name": "DBInstanceIdentifier",
                          "Value": { "Ref": "DBInstance" } }],
         "ComparisonOperator": "LessThanOrEqualToThreshold"
