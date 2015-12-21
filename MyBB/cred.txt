@@ -1,3 +1,0 @@
-$config['database']['hostname'] = 'db.yevhen.net';
-$config['database']['username'] = 'mybbadmin';
-$config['database']['password'] = 'WiWrakHorc8';
