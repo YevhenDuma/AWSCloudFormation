@@ -4,16 +4,6 @@
   "Description" : "AWS CloudFormation.",
 
   "Parameters" : {
- 
-    "SSHLocation" : {
-      "Description" : " The IP address range that can be used to SSH to the EC2 instances",
-      "Type": "String",
-      "MinLength": "9",
-      "MaxLength": "18",
-      "Default": "0.0.0.0/0",
-      "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
-      "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x/x."
-    },
 	
 	"AvailabilityZoneA" : { 
       "Description" : "AvailabilityZone to use, eg us-west-2a",
@@ -79,7 +69,7 @@
       }
     },
 	
-	"SubnetB" : {
+	  "SubnetB" : {
       "Type" : "AWS::EC2::Subnet",
       "Properties" : {
 	    "AvailabilityZone" : { "Ref" : "AvailabilityZoneB"},
@@ -89,7 +79,7 @@
       }
     },
 
-	"RDSSubnetA" : {
+	  "RDSSubnetA" : {
       "Type" : "AWS::EC2::Subnet",
       "Properties" : {
 	    "AvailabilityZone" : { "Ref" : "AvailabilityZoneA"},
@@ -99,7 +89,7 @@
       }
     },
 	
-	"RDSSubnetB" : {
+	  "RDSSubnetB" : {
       "Type" : "AWS::EC2::Subnet",
       "Properties" : {
 	    "AvailabilityZone" : { "Ref" : "AvailabilityZoneB"},
@@ -150,7 +140,7 @@
       }
     },
 	
-	"SubnetARouteTableAssociation" : {
+	  "SubnetARouteTableAssociation" : {
       "Type" : "AWS::EC2::SubnetRouteTableAssociation",
       "Properties" : {
         "SubnetId" : { "Ref" : "SubnetA" },
@@ -165,7 +155,7 @@
         "RouteTableId" : { "Ref" : "RouteTable" }
       }
     },
-	"RDSSubnetARouteTableAssociation" : {
+	  "RDSSubnetARouteTableAssociation" : {
       "Type" : "AWS::EC2::SubnetRouteTableAssociation",
       "Properties" : {
         "SubnetId" : { "Ref" : "RDSSubnetA" },
@@ -303,7 +293,7 @@
     },
     "RDSSubnetB" : {
       "Description" : "RDS Subnet ID",
-      "Value" :  { "Ref" : "RDSSubnetB" }
+       "Value" :  { "Ref" : "RDSSubnetB" }
     }
   }
 }

@@ -489,14 +489,6 @@
     "URL" : {
       "Description" : "URL of the website",
       "Value" :  { "Fn::Join" : [ "", [ "http://", { "Fn::GetAtt" : [ "ElasticLoadBalancer", "DNSName" ]}]]}
-    },
-    "CloudWatchLogGroupName": {
-      "Description": "The name of the CloudWatch log group",
-      "Value": { "Ref": "WebServerLogGroup"}
-    },
-    "CloudWatchErrorLogGroupName": {
-      "Description": "The name of the CloudWatch error log group",
-      "Value": { "Ref": "WebServerErrorLogGroup"}
     }
   }
 }
