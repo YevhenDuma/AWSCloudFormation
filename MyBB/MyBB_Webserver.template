@@ -9,17 +9,17 @@
       "Type" : "AWS::EC2::VPC::Id",
       "Description" : "VpcId of your existing Virtual Private Cloud (VPC)",
       "ConstraintDescription" : "must be the VPC Id of an existing Virtual Private Cloud.",
-      "Default" : "vpc-348ab551"
+      "Default" : "vpc-17320c72"
     },
     "SubnetA" : {
       "Description" : "Subnet in AZ A",
       "Type" : "String",
-      "Default" : "subnet-593b383c"
+      "Default" : "subnet-5ca4a739"
     },
     "SubnetB" : {
       "Description" : "Subnet in AZ B",
       "Type" : "String",
-      "Default" : "subnet-35710f6c"
+      "Default" : "subnet-648fa913"
     },
     "AZs" : {
       "Type" : "List<String>",
