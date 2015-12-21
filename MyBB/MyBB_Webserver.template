@@ -31,7 +31,7 @@
       "Description" : "Name of an existing EC2 KeyPair to enable SSH access to the instances",
       "Type" : "AWS::EC2::KeyPair::KeyName",
       "ConstraintDescription" : "must be the name of an existing EC2 KeyPair.",
-      "Default" : "Yevhen"
+      "Default" : "Work"
     },
     "SSHLocation" : {
       "Description" : "Lockdown SSH access to the bastion host (default can be accessed from anywhere)",
@@ -97,6 +97,11 @@
       "Description" : "Database Password",
       "Type" : "String",
       "Default" : "WiWrakHorc8"
+    },
+	"AppURL" : {
+      "Description" : "Application URL",
+      "Type" : "String",
+      "Default" : "http://resources.mybb.com/downloads/mybb_1806.zip"
     }
   },
 
@@ -137,7 +142,8 @@
               "yum" : {
                 "httpd"        : [],
                 "php"          : [],
-                "php-mysql"    : []
+                "php-mysql"    : [],
+				"unzip"        : []
               }
             },
             "files" : {
@@ -146,6 +152,17 @@
                   "dbhost=", { "Ref" : "DBInstance" }, "\n",
                   "dbuser=", { "Ref" : "DBUser" }, "\n",
                   "dbpass=", { "Ref" : "DBPassword" }, "\n"
+                ]]},
+                "mode"    : "000644",
+                "owner"   : "root",
+                "group"   : "root"
+              },
+              "/etc/httpd/conf.d/mybb.conf" : {
+                "content" : { "Fn::Join" : ["", [
+				  "<VirtualHost *:80>\n",
+				  "DocumentRoot /var/www/mybb\n",
+				  "ErrorLog /var/log/httpd/mybb_error.log\n",
+				  "</VirtualHost>\n"
                 ]]},
                 "mode"    : "000644",
                 "owner"   : "root",
@@ -204,7 +221,13 @@
              "/opt/aws/bin/cfn-signal -e $? ",
              "         --stack ", { "Ref" : "AWS::StackName" },
              "         --resource WebServerGroup ",
-             "         --region ", { "Ref" : "AWS::Region" }, "\n"
+             "         --region ", { "Ref" : "AWS::Region" }, "\n",
+			 
+			 "curl  -o /tmp/mybb.zip ", { "Ref" : "AppURL" }, "\n",
+			 "unzip /tmp/mybb.zip -d /var/www/\n",
+			 "chown -R apache:apache /var/www/mybb\n",
+			 "mv /var/www/Upload /var/www/mybb\n",
+			 "rm -rf /var/www/Documentation\n"
         ]]}}
       }
     },

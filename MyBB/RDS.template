@@ -7,22 +7,22 @@
     "RDSSubnetA" : {
       "Description" : "RDS Subnet in AZ A",
       "Type" : "String",
-      "Default" : "subnet-5e2b283b"
+      "Default" : "subnet-5da4a738"
     },
     "RDSSubnetB" : {
       "Description" : "RDS Subnet in AZ B",
       "Type" : "String",
-      "Default" : "subnet-26eacc51"
+      "Default" : "subnet-658fa912"
     },
     "PrivateSubnet" : {
       "Description" : "PrivateSubnet",
       "Type" : "String",
-      "Default" : "10.0.8.0/24"
+      "Default" : "10.0.0.0/16"
     },    
     "VPC" : {
       "Description" : "VPC",
       "Type" : "String",
-      "Default" : "vpc-c096a9a5"
+      "Default" : "vpc-17320c72"
     },
     "SNSTopic" : {
       "Description" : "SNS Topic",
