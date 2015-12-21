@@ -57,7 +57,7 @@
     "AssociatePublicIpAddress" : {
       "Description" : "Associate Public Ip Address to EC2 instance: true or false.",
       "Type" : "String",
-      "Default" : "false"
+      "Default" : "true"
     },
     "MinInstancesInService" : {
       "Description" : "The minimum number of instances that must be in service within the Auto Scaling group while obsolete instances are being terminated.",
@@ -91,7 +91,8 @@
     },
     "DBInstance" : {
       "Description" : "Database hostname",
-      "Type" : "String"
+      "Type" : "String",
+      "Default" : "rdcm4ggscl81k1.ccqbefkeqhbz.us-west-2.rds.amazonaws.com"
     },
     "DBName" : {
       "Description" : "Database name",
@@ -112,6 +113,11 @@
       "Description" : "Application URL",
       "Type" : "String",
       "Default" : "http://resources.mybb.com/downloads/mybb_1806.zip"
+    },
+    "SNSTopic" : {
+      "Description" : "SNS Topic",
+      "Type" : "String",
+      "Default" : "arn:aws:sns:us-west-2:328869784224:SNS-MyBBSNSTopic-A92NAPILHTV2"
     }
   },
 
@@ -212,6 +218,27 @@
                 "group"   : "root"
               },
 
+              "/tmp/cwlogs/apacheaccess.conf": {
+                "content": {
+                  "Fn::Join": [ "", [
+                    "[general]\n",
+                    "state_file= /var/awslogs/agent-state\n",
+                    "[/var/log/httpd/mybb_error.log]\n",
+                    "file = /var/log/httpd/mybb_error.log\n",
+                    "log_group_name = ", {"Ref": "WebServerErrorLogGroup"}, "\n",
+                    "log_stream_name = {instance_id}/mybb_error.log\n",
+                    "datetime_format = %d/%b/%Y:%H:%M:%S\n",
+                    "[/var/log/httpd/access_log]\n",
+                    "file = /var/log/httpd/access_log\n",
+                    "log_group_name = ", {"Ref": "WebServerLogGroup"}, "\n",
+                    "log_stream_name = {instance_id}/apache.log\n",
+                    "datetime_format = %d/%b/%Y:%H:%M:%S"
+                ]]},
+                "mode": "000400",
+                "owner": "apache",
+                "group": "apache"
+              },
+
               "/etc/cfn/cfn-hup.conf" : {
                 "content" : { "Fn::Join" : ["", [
                   "[main]\n",
@@ -254,6 +281,7 @@
         "SecurityGroups" : [ { "Ref" : "InstanceSecurityGroup" } ],
         "KeyName"        : { "Ref" : "KeyName" },
         "InstanceType" : { "Ref" : "InstanceType" },
+        "IamInstanceProfile": { "Ref": "LogRoleInstanceProfile" },
         "UserData"       : { "Fn::Base64" : { "Fn::Join" : ["", [
              "#!/bin/bash -xe\n",
              "yum update -y aws-cfn-bootstrap\n",
@@ -263,10 +291,10 @@
              "         --resource LaunchConfig ",
              "         --region ", { "Ref" : "AWS::Region" }, "\n",
 
-             "/opt/aws/bin/cfn-signal -e $? ",
-             "         --stack ", { "Ref" : "AWS::StackName" },
-             "         --resource WebServerGroup ",
-             "         --region ", { "Ref" : "AWS::Region" }, "\n",
+             "# Get the CloudWatch Logs agent\n",
+             "wget https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py\n",                
+             "# Install the CloudWatch Logs agent\n",
+             "python awslogs-agent-setup.py -n -r ", { "Ref" : "AWS::Region" }, " -c /tmp/cwlogs/apacheaccess.conf || error_exit 'Failed to run CloudWatch Logs agent setup'\n",
 			       
              "curl -o /tmp/mybb.zip ", { "Ref" : "AppURL" }, "\n",
 			       "unzip /tmp/mybb.zip -d /var/www/\n",
@@ -279,7 +307,12 @@
 			       "if ! (mysql -h ${dbhost} -u ${dbuser} -p${dbpass} -e \"desc ${dbname}.mybb_forums\" > /dev/null 2>&1); then \n",
              "curl -o /tmp/mybb.sql https://s3-us-west-2.amazonaws.com/mybb-crossover/mybb.sql\n",
              "mysql -h ${dbhost} -u ${dbuser} -p${dbpass} ${dbname}</tmp/mybb.sql\n",
-             "fi\n"
+             "fi\n",
+
+             "/opt/aws/bin/cfn-signal -e $? ",
+             "         --stack ", { "Ref" : "AWS::StackName" },
+             "         --resource WebServerGroup ",
+             "         --region ", { "Ref" : "AWS::Region" }, "\n"
         ]]}}
       }
     },
@@ -335,13 +368,135 @@
           { "IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : { "Ref" : "SSHLocation" } }
         ]
       }
+    },
+
+    "WebServerLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "RetentionInDays": 7
+      }
+    },
+    "WebServerErrorLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "RetentionInDays": 7
+      }
+    },
+    "404MetricFilter": {
+      "Type": "AWS::Logs::MetricFilter",
+      "Properties": {
+        "LogGroupName": {
+          "Ref": "WebServerLogGroup"
+        },
+      "FilterPattern": "[ip, identity, user_id, timestamp, request, status_code = 404, size, ...]",
+      "MetricTransformations": [
+        {
+        "MetricValue": "1",
+        "MetricNamespace": "test/404s",
+        "MetricName": "test404Count"
+        }
+        ]
+      }
+    },
+    "BytesTransferredMetricFilter": {
+      "Type": "AWS::Logs::MetricFilter",
+      "Properties": {
+        "LogGroupName": { "Ref": "WebServerLogGroup" },
+        "FilterPattern": "[ip, identity, user_id, timestamp, request, status_code, size, ...]",
+        "MetricTransformations": [
+          {
+          "MetricValue": "$size",
+          "MetricNamespace": "test/BytesTransferred",
+          "MetricName": "testBytesTransferred"
+          }
+        ]
+      }
+    },
+    "404Alarm": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmDescription": "The number of 404s is greater than 2 over 2 minutes",
+        "MetricName": "test404Count",
+        "Namespace": "test/404s",
+        "Statistic": "Sum",
+        "Period": "60",
+        "EvaluationPeriods": "2",
+        "Threshold": "2",
+        "AlarmActions": [ { "Ref": "SNSTopic" } ],
+        "Unit": "Count",
+        "ComparisonOperator": "GreaterThanThreshold"
+      }
+    },
+    "BandwidthAlarm": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmDescription": "The average volume of traffic is greater 3500 KB over 10 minutes",
+        "MetricName": "testBytesTransferred",
+        "Namespace": "test/BytesTransferred",
+        "Statistic": "Average",
+        "Period": "300",
+        "EvaluationPeriods": "2",
+        "Threshold": "3500",
+        "AlarmActions": [ { "Ref": "SNSTopic" } ],
+        "Unit": "Kilobytes",
+        "ComparisonOperator": "GreaterThanThreshold"
+      }
+    },
+    "LogRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [ {
+            "Effect": "Allow",
+            "Principal": { "Service": [ "ec2.amazonaws.com" ] },
+            "Action": [ "sts:AssumeRole" ] 
+          }]
+        },
+        "Path": "/",
+        "Policies": [ {
+          "PolicyName": "LogRolePolicy",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+              "Effect": "Allow",
+              "Action": [
+                "logs:Create*",
+                "logs:PutLogEvents",
+                "s3:GetObject"
+              ],     
+              "Resource": [
+                "arn:aws:logs:*:*:*",
+                "arn:aws:s3:::*"
+              ]
+              }
+            ]
+          }
+        }]
+      }
+    },
+    "LogRoleInstanceProfile": {
+      "Type": "AWS::IAM::InstanceProfile",
+        "Properties": {
+          "Path": "/",
+          "Roles": [{ "Ref": "LogRole" }]
+        }
     }
-  }, 
+  },
 
   "Outputs" : {
     "URL" : {
       "Description" : "URL of the website",
       "Value" :  { "Fn::Join" : [ "", [ "http://", { "Fn::GetAtt" : [ "ElasticLoadBalancer", "DNSName" ]}]]}
+    },
+    "CloudWatchLogGroupName": {
+      "Description": "The name of the CloudWatch log group",
+      "Value": { "Ref": "WebServerLogGroup"}
+    },
+    "CloudWatchErrorLogGroupName": {
+      "Description": "The name of the CloudWatch error log group",
+      "Value": { "Ref": "WebServerErrorLogGroup"}
     }
   }
 }
