@@ -8,18 +8,15 @@
     "VPC" : {
       "Type" : "AWS::EC2::VPC::Id",
       "Description" : "VPC of your existing Virtual Private Cloud (VPC)",
-      "ConstraintDescription" : "must be the VPC Id of an existing Virtual Private Cloud.",
-      "Default" : "vpc-17320c72"
+      "ConstraintDescription" : "must be the VPC Id of an existing Virtual Private Cloud."
     },
     "SubnetA" : {
       "Description" : "Subnet in AZ A",
-      "Type" : "String",
-      "Default" : "subnet-5ca4a739"
+      "Type" : "String"
     },
     "SubnetB" : {
       "Description" : "Subnet in AZ B",
-      "Type" : "String",
-      "Default" : "subnet-648fa913"
+      "Type" : "String"
     },
     "AZs" : {
       "Type" : "List<String>",
@@ -30,11 +27,10 @@
     "KeyName" : {
       "Description" : "Name of an existing EC2 KeyPair to enable SSH access to the instances",
       "Type" : "AWS::EC2::KeyPair::KeyName",
-      "ConstraintDescription" : "must be the name of an existing EC2 KeyPair.",
-      "Default" : "Yevhen"
+      "ConstraintDescription" : "must be the name of an existing EC2 KeyPair."
     },
     "SSHLocation" : {
-      "Description" : "Lockdown SSH access to the bastion host (default can be accessed from anywhere)",
+      "Description" : "Lockdown SSH access to the bastion host.",
       "Type" : "String",
       "MinLength": "9",
       "MaxLength": "18",
@@ -90,8 +86,7 @@
     },
     "DBInstance" : {
       "Description" : "Database hostname to connects to.",
-      "Type" : "String",
-      "Default" : "rd1jd97iwndm1ot.ccqbefkeqhbz.us-west-2.rds.amazonaws.com"
+      "Type" : "String"
     },
     "DBName" : {
       "Description" : "Database name, needed for configuration.",
@@ -113,15 +108,14 @@
       "Type" : "String",
       "Default" : "http://resources.mybb.com/downloads/mybb_1806.zip"
     },
-    "AppDBURL" : {
+    "AppDataBaseURL" : {
       "Description" : "URL to Database for application. By default - URL to custom file on S3 bucket.",
       "Type" : "String",
       "Default" : "https://s3-us-west-2.amazonaws.com/mybb-crossover/mybb.sql"
     },
     "SNSTopic" : {
       "Description" : "SNS Topic to send emails.",
-      "Type" : "String",
-      "Default" : "arn:aws:sns:us-west-2:328869784224:SNS-MyBBSNSTopic-A92NAPILHTV2"
+      "Type" : "String"
     }
   },
 

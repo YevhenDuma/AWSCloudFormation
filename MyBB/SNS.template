@@ -1,14 +1,13 @@
 {
   "AWSTemplateFormatVersion" : "2010-09-09",
 
-  "Description" : "AWS CloudFormation MyBB SNS template.",
+  "Description" : "AWS CloudFormation SNS template.",
 
   "Parameters" : {
 
     "Email" : {
       "Type" : "String",
-      "Description" : "Email address to send alerts.",
-      "Default" : "yevhen.duma@gmail.com"
+      "Description" : "Email address to send alerts."
     }
   },
 
@@ -26,7 +25,7 @@
   
   "Outputs" : {
     "SNSTopic": {
-      "Description" : "DNS name for database",
+      "Description" : "ARN for SNS topic.",
       "Value" : { "Ref" : "SNSTopic" }
     }
   }
