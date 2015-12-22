@@ -4,7 +4,7 @@
   "Description" : "AWS CloudFormation MyBB SNS template.",
 
   "Resources" : {
-    "MyBBSNSTopic" : {
+    "SNSTopic" : {
       "Type" : "AWS::SNS::Topic",
       "Properties" : {
         "Subscription" : [ {
@@ -12,6 +12,12 @@
           "Protocol" : "email"
         } ]
       }
+    }
+  },
+  "Outputs" : {
+    "SNSTopic": {
+      "Description" : "DNS name for database",
+      "Value" : { "Ref" : "SNSTopic" }
     }
   }
 }

@@ -15,52 +15,52 @@
       "Default" : "subnet-658fa912"
     },
     "PrivateSubnet" : {
-      "Description" : "PrivateSubnet",
+      "Description" : "Private Subnet CIDR",
       "Type" : "String",
       "Default" : "10.0.0.0/16"
     },    
     "VPC" : {
-      "Description" : "VPC",
+      "Description" : "A virtual private cloud (VPC) is a virtual network dedicated to your AWS account. ",
       "Type" : "String",
       "Default" : "vpc-17320c72"
     },
     "SNSTopic" : {
-      "Description" : "SNS Topic",
+      "Description" : "SNS Topic arn ID",
       "Type" : "String",
-      "Default" : "arn:aws:sns:us-west-2:328869784224:MyBB-MyBBSNSTopic-1IEW2NF9OOYHM"
+      "Default" : " 	arn:aws:sns:us-west-2:328869784224:SNS-MyBBSNSTopic-A92NAPILHTV2"
     },    
     "DBName" : {
-      "Description" : "DBName",
+      "Description" : "The name of the initial database of this instance that was provided at create time, if one was specified. This same name is returned for the life of the DB instance.",
       "Type" : "String",
       "Default" : "mybb"
     },
     "DBEngine" : {
-      "Description" : "DBEngine",
+      "Description" : "The name of the database engine that the DB instance uses.",
       "Type" : "String",
       "Default" : "MySQL"
     },
     "DBMultiAZ" : {
-      "Description" : "DBMultiAZ",
+      "Description" : "Specifies if the database instance is a multiple Availability Zone deployment. You cannot set the AvailabilityZone parameter if the MultiAZ parameter is set to true.",
       "Type" : "String",
-      "Default" : "false"
+      "Default" : "true"
     },
     "DBUser" : {
-      "Description" : "DBUser",
+      "Description" : "The master user name for the database instance. This property is optional when you specify the DBSnapshotIdentifier or the DBClusterIdentifier property to create DB instances. ",
       "Type" : "String",
       "Default" : "mybbadmin"
     },
     "DBPassword" : {
-      "Description" : "DBPassword",
+      "Description" : "The master password for the database instance. This property is optional when you specify the DBSnapshotIdentifier or the DBClusterIdentifier property to create DB instances.",
       "Type" : "String",
       "Default" : "WiWrakHorc8"
     },
     "DBClass" : {
-      "Description" : "DBClass",
+      "Description" : "A name for the DB instance. If you don't specify a name, AWS CloudFormation generates a unique physical ID and uses that ID for the DB instance.",
       "Type" : "String",
       "Default" : "db.t2.micro"
     },
     "DBAllocatedStorage" : {
-      "Description" : "DBAllocatedStorage",
+      "Description" : "The allocated storage size specified in gigabytes (GB). If any value is used in the Iops parameter, AllocatedStorage must be at least 100 GB, which corresponds to the minimum Iops value of 1000. If Iops is increased (in 1000 IOPS increments), then AllocatedStorage must also be increased (in 100 GB increments) correspondingly.",
       "Type" : "Number",
       "Default" : "5"
     }

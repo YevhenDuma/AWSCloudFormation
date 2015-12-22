@@ -6,13 +6,13 @@
   "Parameters" : {
 	
 	"AvailabilityZoneA" : { 
-      "Description" : "AvailabilityZone to use, eg us-west-2a",
+      "Description" : "Availability Zone to use, eg us-west-2a",
       "Type" : "String",
       "Default" : "us-west-2a"
     },
 	
 	"AvailabilityZoneB" : { 
-      "Description" : "AvailabilityZone to use, eg us-west-2b",
+      "Description" : "Availability Zone to use, eg us-west-2b",
       "Type" : "String",
       "Default" : "us-west-2b"
     },
@@ -30,7 +30,7 @@
     },
 	
     "WebSubnetB" : {
-      "Description" : "Public CIDR in AZ A, eg. 10.0.16.0/24",
+      "Description" : "Public CIDR in AZ B, eg. 10.0.16.0/24",
       "Type" : "String",
       "Default" : "10.0.16.0/24"
     },
@@ -42,7 +42,7 @@
     },
 	
     "DBSubnetB" : {
-      "Description" : "RDS CIDR in AZ A, eg. 10.0.40.0/24",
+      "Description" : "RDS CIDR in AZ B, eg. 10.0.40.0/24",
       "Type" : "String",
       "Default" : "10.0.40.0/24"
     }
