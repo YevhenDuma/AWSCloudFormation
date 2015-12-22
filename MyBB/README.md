@@ -1,4 +1,4 @@
-#MyBB forum (http://www.mybb.com/)
+#MyBB forum (http://www.mybb.com/)  - https://github.com/YevhenDuma/AWSCloudFormation/tree/master/MyBB 
 Cloud Formation templates that creates infrastructure for MyBB forum, installs MyBB and scale up/down if needed.
 
 I've created 4 Cloud Formation templates, mainly by service name, because:
@@ -60,6 +60,7 @@ As I am working as DevOps last few years, I was trying to create not only secure
 
 Missing:
 - Monitoring for ELB. My goal was not to create all possible monitorings, but to show examples how to monitor (full list of supported monitors: http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/elb-metricscollected.html )
+- Memory monitoring is configured on AWS side, but not inside instance. Disk monitoring is missing.
 
 Assumptions:
  - I am not satisfied with security, I know things that I need to improve, but it's related to time/financial;
@@ -70,15 +71,6 @@ MyBB config:
 Admin user: admin
 Password: 12321q
 
-
- Create a txt file with the following information
-
-Instructions to evaluate the published work done(e.g. AWS  account credentials)
-
-Assumptions you have made - it is good to explain your thought process and the assumptions you have made
-
-Requirements that you have not covered in your submission, if any
-
-Issues you have faced while completing the assignment, if any
-
-Constructive feedback for improving the assignment
+#Feedback:
+- Interesting task, that really check your AWS knowledge
+- But this task takes a lot of time, since in most cases you are updating something, less - creating something new.
