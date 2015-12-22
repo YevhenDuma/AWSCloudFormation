@@ -1,4 +1,5 @@
 #MyBB forum (http://www.mybb.com/)  - https://github.com/YevhenDuma/AWSCloudFormation/tree/master/MyBB 
+	URL to access: http://forum.yevhen.net
 Cloud Formation templates that creates infrastructure for MyBB forum, installs MyBB and scale up/down if needed.
 
 I've created 4 Cloud Formation templates, mainly by service name, because:
