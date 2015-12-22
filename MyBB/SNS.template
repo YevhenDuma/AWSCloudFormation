@@ -3,17 +3,27 @@
 
   "Description" : "AWS CloudFormation MyBB SNS template.",
 
+  "Parameters" : {
+
+    "Email" : {
+      "Type" : "String",
+      "Description" : "Email address to send alerts.",
+      "Default" : "yevhen.duma@gmail.com"
+    }
+  },
+
   "Resources" : {
     "SNSTopic" : {
       "Type" : "AWS::SNS::Topic",
       "Properties" : {
         "Subscription" : [ {
-          "Endpoint" : "yevhen.duma@gmail.com",
+          "Endpoint" : { "Ref" : "Email" },
           "Protocol" : "email"
         } ]
       }
     }
   },
+  
   "Outputs" : {
     "SNSTopic": {
       "Description" : "DNS name for database",

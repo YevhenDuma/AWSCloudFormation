@@ -5,9 +5,9 @@
 
   "Parameters" : {
 
-    "VpcId" : {
+    "VPC" : {
       "Type" : "AWS::EC2::VPC::Id",
-      "Description" : "VpcId of your existing Virtual Private Cloud (VPC)",
+      "Description" : "VPC of your existing Virtual Private Cloud (VPC)",
       "ConstraintDescription" : "must be the VPC Id of an existing Virtual Private Cloud.",
       "Default" : "vpc-17320c72"
     },
@@ -112,6 +112,11 @@
       "Description" : "Application URL to download application from. By default - URL to download page of MyBB.",
       "Type" : "String",
       "Default" : "http://resources.mybb.com/downloads/mybb_1806.zip"
+    },
+    "AppDBURL" : {
+      "Description" : "URL to Database for application. By default - URL to custom file on S3 bucket.",
+      "Type" : "String",
+      "Default" : "https://s3-us-west-2.amazonaws.com/mybb-crossover/mybb.sql"
     },
     "SNSTopic" : {
       "Description" : "SNS Topic to send emails.",
@@ -305,7 +310,7 @@
              "ln -s /etc/mybb/config.php /var/www/mybb/inc/config.php\n",
 			       "source /etc/mybb/mybb.properties\n",
 			       "if ! (mysql -h ${dbhost} -u ${dbuser} -p${dbpass} -e \"desc ${dbname}.mybb_forums\" > /dev/null 2>&1); then \n",
-             "curl -o /tmp/mybb.sql https://s3-us-west-2.amazonaws.com/mybb-crossover/mybb.sql\n",
+             "curl -o /tmp/mybb.sql ",  { "Ref" : "AppDataBaseURL" }, "\n",
              "mysql -h ${dbhost} -u ${dbuser} -p${dbpass} ${dbname}</tmp/mybb.sql\n",
              "fi\n",
 
@@ -342,7 +347,7 @@
       "Type" : "AWS::EC2::SecurityGroup",
       "Properties" : {
         "GroupDescription" : "Enable HTTP access on port 80",
-        "VpcId" : { "Ref" : "VpcId" },
+        "VpcId" : { "Ref" : "VPC" },
         "SecurityGroupIngress" : [ {
           "IpProtocol" : "tcp",
           "FromPort" : "80",
@@ -362,7 +367,7 @@
       "Type" : "AWS::EC2::SecurityGroup",
       "Properties" : {
         "GroupDescription" : "Enable HTTP access and SSH access",
-        "VpcId" : { "Ref" : "VpcId" },
+        "VpcId" : { "Ref" : "VPC" },
         "SecurityGroupIngress" : [
           { "IpProtocol" : "tcp", "FromPort" : "80", "ToPort" : "80", "SourceSecurityGroupId" : { "Ref" : "LoadBalancerSecurityGroup" } },
           { "IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : { "Ref" : "SSHLocation" } }
