@@ -1,0 +1,6 @@
+ [
+    {
+        "ParameterKey": "HostedZoneName",
+        "ParameterValue": "test.companynews.com"
+    }
+]

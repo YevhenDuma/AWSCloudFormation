@@ -1,0 +1,31 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "AWS CloudFormation SNS template.",
+
+  "Parameters" : {
+    "Email" : {
+      "Type" : "String",
+      "Description" : "Email address to send alerts."
+    }
+  },
+
+  "Resources" : {
+    "SNSTopic" : {
+      "Type" : "AWS::SNS::Topic",
+      "Properties" : {
+        "Subscription" : [ {
+          "Endpoint" : { "Ref" : "Email" },
+          "Protocol" : "email"
+        }]
+      }
+    }
+  },
+  
+  "Outputs" : {
+    "SNSTopic": {
+      "Description" : "ARN for SNS topic.",
+      "Value" : { "Ref" : "SNSTopic" }
+    }
+  }
+}

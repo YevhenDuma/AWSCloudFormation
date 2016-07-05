@@ -1,0 +1,134 @@
+ [
+    {
+        "ParameterKey": "VPC",
+        "ParameterValue": "vpc-2600d842"
+    },
+    {
+        "ParameterKey": "PublicSubnetA",
+        "ParameterValue": "subnet-1f1bdf47"
+    },
+    {
+        "ParameterKey": "PublicSubnetB",
+        "ParameterValue": "subnet-078a0d63"
+    },
+    {
+        "ParameterKey": "PublicSubnetC",
+        "ParameterValue": "subnet-08bc097e"
+    },
+    {
+        "ParameterKey": "PrivateSubnetA",
+        "ParameterValue": "subnet-101bdf48"
+    },
+    {
+        "ParameterKey": "PrivateSubnetB",
+        "ParameterValue": "subnet-008a0d64"
+    },
+    {
+        "ParameterKey": "PrivateSubnetC",
+        "ParameterValue": "subnet-09bc097f"
+    },
+    {
+        "ParameterKey": "AZs",
+        "ParameterValue": "eu-west-1a, eu-west-1b, eu-west-1c"
+    },
+    {
+        "ParameterKey": "KeyName",
+        "ParameterValue": "yevhen"
+    },
+    {
+        "ParameterKey": "SNSTopic",
+        "ParameterValue": "arn:aws:sns:eu-west-1:328869784224:SNS-Test-SNSTopic-GMHM20S7J4FS"
+    },
+    {
+        "ParameterKey": "HTTPLocation",
+        "ParameterValue": "62.85.88.82/32"
+    },
+    {
+        "ParameterKey": "SSHLocation",
+        "ParameterValue": "62.85.88.82/23"
+    },
+    {
+        "ParameterKey": "InstanceType",
+        "ParameterValue": "t2.micro"
+    },
+    {
+        "ParameterKey": "InstanceCount",
+        "ParameterValue": "1"
+    },
+    {
+        "ParameterKey": "AssociatePublicIpAddress",
+        "ParameterValue": "false"
+    },
+    {
+        "ParameterKey": "MinInstancesInService",
+        "ParameterValue": "1"
+    },
+    {
+        "ParameterKey": "MaxBatchSize",
+        "ParameterValue": "1"
+    },
+    {
+        "ParameterKey": "MinInstanceSize",
+        "ParameterValue": "1"
+    },
+    {
+        "ParameterKey": "MaxInstanceSize",
+        "ParameterValue": "2"
+    },
+    {
+        "ParameterKey": "Cooldown",
+        "ParameterValue": "120"
+    },
+    {
+        "ParameterKey": "PauseTime",
+        "ParameterValue": "PT7M"
+    },
+    {
+        "ParameterKey": "LoadBalancerScheme",
+        "ParameterValue": "internet-facing"
+    },
+    {
+        "ParameterKey": "LoadBalancerIdleTimemout",
+        "ParameterValue": "600"
+    },
+    {
+        "ParameterKey": "CPUPeriod",
+        "ParameterValue": "60"
+    },
+    {
+        "ParameterKey": "CPUHighEvaluationPeriods",
+        "ParameterValue": "4"
+    },
+    {
+        "ParameterKey": "CPUHighThreshold",
+        "ParameterValue": "75"
+    },
+    {
+        "ParameterKey": "CPULowEvaluationPeriods",
+        "ParameterValue": "10"
+    },
+    {
+        "ParameterKey": "CPULowThreshold",
+        "ParameterValue": "50"
+    },
+    {
+        "ParameterKey": "ELBSubdomain",
+        "ParameterValue": "static"
+    },
+    {
+        "ParameterKey": "HostedZone",
+        "ParameterValue": "test.companynews.com"
+    },
+    {
+        "ParameterKey": "URL",
+        "ParameterValue": "https://s3.amazonaws.com/infra-assessment/static.zip"
+    },
+    {
+        "ParameterKey": "AMI",
+        "ParameterValue": "ami-f9dd458a"
+    } ,
+    {
+        "ParameterKey": "Version",
+        "ParameterValue": "1.1"
+    }          
+]

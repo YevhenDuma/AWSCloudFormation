@@ -1,0 +1,54 @@
+ [
+    {
+        "ParameterKey": "VPCCIDR",
+        "ParameterValue": "10.1.0.0/23"
+    },
+	{
+        "ParameterKey": "VPCTag",
+        "ParameterValue": "companyNews-Test"
+    },
+    {
+        "ParameterKey": "AvailabilityZoneA",
+        "ParameterValue": "eu-west-1a"
+    },
+    {
+        "ParameterKey": "AvailabilityZoneB",
+        "ParameterValue": "eu-west-1b"
+    },
+    {
+        "ParameterKey": "AvailabilityZoneC",
+        "ParameterValue": "eu-west-1c"
+    },
+    {
+        "ParameterKey": "EC2PublicSubnetACIDR",
+        "ParameterValue": "10.1.0.0/26"
+    },
+    {
+        "ParameterKey": "EC2PublicSubnetBCIDR",
+        "ParameterValue": "10.1.0.64/26"
+    },
+    {
+        "ParameterKey": "EC2PublicSubnetCCIDR",
+        "ParameterValue": "10.1.0.128/26"
+    },
+    {
+        "ParameterKey": "EC2PrivateSubnetACIDR",
+        "ParameterValue": "10.1.0.192/26"
+    },
+    {
+        "ParameterKey": "EC2PrivateSubnetBCIDR",
+        "ParameterValue": "10.1.1.0/26"
+    },
+    {
+        "ParameterKey": "EC2PrivateSubnetCCIDR",
+        "ParameterValue": "10.1.1.64/26"
+    },
+    {
+        "ParameterKey": "EnableDnsSupport",
+        "ParameterValue": "true"
+    },
+    {
+        "ParameterKey": "EnableDnsHostnames",
+        "ParameterValue": "true"
+    }
+]

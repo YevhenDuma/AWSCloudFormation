@@ -1,0 +1,25 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "AWS CloudFormation Route53 template.",
+
+  "Parameters" : {
+    "HostedZoneName" : {
+      "Description" : "The name of the domain. For resource record types that include a domain name, specify a fully qualified domain name.",
+      "Type" : "String"
+    }
+  },
+
+  "Resources" : {
+
+    "DNS": {
+      "Type": "AWS::Route53::HostedZone",
+      "Properties": {
+        "HostedZoneConfig": {
+          "Comment": "Hosted Zone"
+        },
+        "Name": { "Ref" : "HostedZoneName"}
+      }
+    }
+  }
+}
