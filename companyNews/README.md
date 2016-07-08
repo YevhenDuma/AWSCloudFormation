@@ -1,3 +1,25 @@
+Table of Contents
+======
+
+![alt text](https://github.com/YevhenDuma/AWSCloudFormation/tree/master/companyNews#about "About")
+
+![alt text](https://github.com/YevhenDuma/AWSCloudFormation/tree/master/companyNews#architectual-map "Architectual diagram")
+
+
+![alt text](https://github.com/YevhenDuma/AWSCloudFormation/tree/master/companyNews#assumptions "Assumptions")
+
+
+![alt text](https://github.com/YevhenDuma/AWSCloudFormation/tree/master/companyNews#decisions "Decisions")
+
+
+![alt text](http://github.com/YevhenDuma/AWSCloudFormation/tree/master/companyNews#expected-result "Expected result")
+
+
+![alt text](https://github.com/YevhenDuma/AWSCloudFormation/tree/master/companyNews#result "Result")
+
+
+
+
 About
 ======
 
@@ -42,13 +64,21 @@ Expected result:
 After uploading this CloudFormation templates you will have whole infrastructure up and running, and Web Application accesible from some limited CIDR or to anyone if needed.
 
 
+Result:
+======
+
+URL to access: **http://<domainname>/companyNews**
+
+Time to scale: around 4 minutes
+
+
 Steps to create environments:
 ------
 
 - Run next command to configure aws credentials
 
 
-	**aws configure**
+	_aws configure_
 
 - First you need to create Core infrastructure, and check output in CloudFormation from AWS console. After for each environment update WebApp-companyNews-<env>-parameters.json file.
 
@@ -58,11 +88,11 @@ To create Test environment, run next commands from folder with templates and par
 
 1. To create Core infastructure:
 
-	**AWSCFNAME="Core"
+	_AWSCFNAME="Core"_
 
-	AWSENV="Test"
+	_AWSENV="Test"_
 
-	aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json**
+	_aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json_
 
 2. To create Route53 hosted zone:
 
@@ -92,12 +122,3 @@ To create Test environment, run next commands from folder with templates and par
 if update needed (e.g. different url. some additional steps in deployments) simply run:
 
 	**aws cloudformation update-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json --capabilities CAPABILITY_IAM**
-
-
-
-URL to access: http://<domainname>/companyNews
-------
-
-
-Time to scale: around 4 minutes
-------
