@@ -29,9 +29,9 @@ Decisions:
 - To install needed packages, configure application we can use Puppet, Chef or Ansible. In this example to simplify solution none of Configuration Management tool was used. Instead installation and configuration done via UserData. For different environment different values could be stored in parameter files
 - With CloudFormation there is possibility for 0-downtime deployment
 - It's bad to deploy application without keeping in mind whole infrastructure. So as result here is Core infrastructure templates. I've also used Route53 to have nice DNS names.
-- All templates are separated. It's possible to have everything in one file, or to have dependend CloudFormation templates, but in some cases you need to updated CloudFormation templates independently.
-- nginx is pretty good for static files and works as http proxy.
-- for https it is possible to use Amazon Certificate Management service
+- All templates are separated. It's possible to have everything in one file, or to have dependend CloudFormation templates, but in some cases you need to updated CloudFormation templates independently
+- nGinx is pretty good for static files and works as http proxy
+- For https it is possible to use Amazon Certificate Management service
 - Scaling is part of templates. If CPU reaches XX % during YY time AWS will start one more instance. Maximum amoun of instances could be different for different environments
 - There is possibility to have Scheduled scaling
 
@@ -48,7 +48,7 @@ Steps to create environments:
 - Run next command to configure aws credentials
 
 
-	aws configure
+	**aws configure**
 
 - First you need to create Core infrastructure, and check output in CloudFormation from AWS console. After for each environment update WebApp-companyNews-<env>-parameters.json file.
 
@@ -58,40 +58,40 @@ To create Test environment, run next commands from folder with templates and par
 
 1. To create Core infastructure:
 
-	AWSCFNAME="Core"
+	**AWSCFNAME="Core"
 
 	AWSENV="Test"
 
-	aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json
+	aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json**
 
 2. To create Route53 hosted zone:
 
-	AWSCFNAME="Route53"
+	**AWSCFNAME="Route53"
 
 	AWSENV="Test"
 
-	aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json
+	aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json**
 
 3. To create SNS topic:
 
-	AWSCFNAME="SNS"
+	**AWSCFNAME="SNS"
 
 	AWSENV="Test"
 
-	aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json
+	aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json**
 
 4. Deploy Web Appication
 
-	AWSCFNAME="WebStatic"
+	**AWSCFNAME="WebApp"
 
 	AWSENV="Test"
 
-	aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json --capabilities CAPABILITY_IAM
+	aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json --capabilities CAPABILITY_IAM**
 
 
 if update needed (e.g. different url. some additional steps in deployments) simply run:
 
-	aws cloudformation update-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json --capabilities CAPABILITY_IAM
+	**aws cloudformation update-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json --capabilities CAPABILITY_IAM**
 
 
 
