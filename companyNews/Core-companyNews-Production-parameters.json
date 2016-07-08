@@ -1,7 +1,7 @@
  [
     {
         "ParameterKey": "VPCCIDR",
-        "ParameterValue": "10.0.0.0/23"
+        "ParameterValue": "10.1.0.0/23"
     },
 	{
         "ParameterKey": "VPCTag",
@@ -21,27 +21,27 @@
     },
     {
         "ParameterKey": "EC2PublicSubnetACIDR",
-        "ParameterValue": "10.0.0.0/26"
+        "ParameterValue": "10.1.0.0/26"
     },
     {
         "ParameterKey": "EC2PublicSubnetBCIDR",
-        "ParameterValue": "10.0.0.64/26"
+        "ParameterValue": "10.1.0.64/26"
     },
     {
         "ParameterKey": "EC2PublicSubnetCCIDR",
-        "ParameterValue": "10.0.0.128/26"
+        "ParameterValue": "10.1.0.128/26"
     },
     {
         "ParameterKey": "EC2PrivateSubnetACIDR",
-        "ParameterValue": "10.0.0.192/26"
+        "ParameterValue": "10.1.0.192/26"
     },
     {
         "ParameterKey": "EC2PrivateSubnetBCIDR",
-        "ParameterValue": "10.0.1.0/26"
+        "ParameterValue": "10.1.1.0/26"
     },
     {
         "ParameterKey": "EC2PrivateSubnetCCIDR",
-        "ParameterValue": "10.0.1.64/26"
+        "ParameterValue": "10.1.1.64/26"
     },
     {
         "ParameterKey": "EnableDnsSupport",

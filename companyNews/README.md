@@ -1,61 +1,103 @@
+About
+======
+
+CloudFormation templates to create 2 environments (Test and Production) for Java based application (without RDBMS).
+
+
+Architectual map:
+======
+
+![alt text](https://github.com/YevhenDuma/AWSCloudFormation/blob/master/companyNews/ArchDiagram.png "companyNews Architectual diagram")
+
+
+Assumptions:
+======
+
+1. All environments should be equal
+
+2. Consider monitoring and auto recovery
+
+3. Consider autoscaling
+
+
+Decisions:
+=======
+
+- One of easiest ways to deploy application is to use cloud.
+- AWS provides automation tool - CloudFormation, to create infrastructure from code
+- With CLoudFormation we can use docker (ECS service) or linux instances (EC2). In case of big Java application and need to increase in a moment docker will be better solution.
+- To install needed packages, configure application we can use Puppet, Chef or Ansible. In this example to simplify solution none of Configuration Management tool was used. Instead installation and configuration done via UserData. For different environment different values could be stored in parameter files
+- With CloudFormation there is possibility for 0-downtime deployment
+- It's bad to deploy application without keeping in mind whole infrastructure. So as result here is Core infrastructure templates. I've also used Route53 to have nice DNS names.
+- All templates are separated. It's possible to have everything in one file, or to have dependend CloudFormation templates, but in some cases you need to updated CloudFormation templates independently.
+- nginx is pretty good for static files and works as http proxy.
+- for https it is possible to use Amazon Certificate Management service
+- Scaling is part of templates. If CPU reaches XX % during YY time AWS will start one more instance. Maximum amoun of instances could be different for different environments
+- There is possibility to have Scheduled scaling
+
+
+Expected result:
+======
+
+After uploading this CloudFormation templates you will have whole infrastructure up and running, and Web Application accesible from some limited CIDR or to anyone if needed.
+
+
 Steps to create environments:
-Run next command to configure aws credentials
+------
+
+- Run next command to configure aws credentials
+
 
 	aws configure
 
-To create Test environment, run next commands from folder with templates and parameter files
+- First you need to create Core infrastructure, and check output in CloudFormation from AWS console. After for each environment update WebApp-companyNews-<env>-parameters.json file.
 
-1) To create core infastructure:
+- Procedure to create Test and Production environment is same, next will be steps for Test environment. For Production instead of  AWSENV="Test" use  AWSENV="Production"
 
-AWSCFNAME="Core"
+To create Test environment, run next commands from folder with templates and parameter files:
 
-AWSENV="Test"
+1. To create Core infastructure:
 
-aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json
+	AWSCFNAME="Core"
 
-2) To create Route53 hosted zone:
+	AWSENV="Test"
 
-AWSCFNAME="Route53"
+	aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json
 
-AWSENV="Test"
+2. To create Route53 hosted zone:
 
-aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json
+	AWSCFNAME="Route53"
 
-3) To create SNS topic:
+	AWSENV="Test"
 
-AWSCFNAME="SNS"
+	aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json
 
-AWSENV="Test"
+3. To create SNS topic:
 
-aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json
+	AWSCFNAME="SNS"
 
-4) Create Role with static content:
+	AWSENV="Test"
 
-AWSCFNAME="WebStatic"
+	aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json
 
-AWSENV="Test"
+4. Deploy Web Appication
 
-aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json --capabilities CAPABILITY_IAM
+	AWSCFNAME="WebStatic"
 
+	AWSENV="Test"
 
-5) Create Web Applicaton role:
-
-AWSCFNAME="WebApp"
-
-AWSENV="Test"
-
-aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json --capabilities CAPABILITY_IAM
+	aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json --capabilities CAPABILITY_IAM
 
 
-update stack:
-aws cloudformation update-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json --capabilities CAPABILITY_IAM
+if update needed (e.g. different url. some additional steps in deployments) simply run:
+
+	aws cloudformation update-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json --capabilities CAPABILITY_IAM
 
 
 
-http://webstatic-elasticl-11grobhya2oig-612325766.eu-west-1.elb.amazonaws.com/static/images/logo.png
+URL to access: http://<domainname>/companyNews
+------
 
-Update template files
 
-
-Time to scale:
-Static - 3 min and 8 sec
+Time to scale: around 4 minutes
+------
