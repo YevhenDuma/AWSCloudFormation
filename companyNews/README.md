@@ -67,7 +67,7 @@ After uploading this CloudFormation templates you will have whole infrastructure
 Result:
 ======
 
-URL to access: **http://<domainname>/companyNews**
+URL to access: **http://DOMAINNAME/companyNews**
 
 Time to scale: around 4 minutes
 
@@ -80,7 +80,7 @@ Steps to create environments:
 
 	_aws configure_
 
-- First you need to create Core infrastructure, and check output in CloudFormation from AWS console. After for each environment update WebApp-companyNews-<env>-parameters.json file.
+- First you need to create Core infrastructure, and check output in CloudFormation from AWS console. After for each environment update WebApp-companyNews-ENV-parameters.json file.
 
 - Procedure to create Test and Production environment is same, next will be steps for Test environment. For Production instead of  AWSENV="Test" use  AWSENV="Production"
 
