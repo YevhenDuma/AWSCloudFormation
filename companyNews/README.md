@@ -78,7 +78,7 @@ Steps to create environments:
 - Run next command to configure aws credentials
 
 
-	_aws configure_
+	`aws configure`
 
 - First you need to create Core infrastructure, and check output in CloudFormation from AWS console. After for each environment update WebApp-companyNews-ENV-parameters.json file.
 
@@ -88,37 +88,37 @@ To create Test environment, run next commands from folder with templates and par
 
 1. To create Core infastructure:
 
-	_AWSCFNAME="Core"_
+	`AWSCFNAME="Core"`
 
-	_AWSENV="Test"_
+	`AWSENV="Test"`
 
-	_aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json_
+	`aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json`
 
 2. To create Route53 hosted zone:
 
-	_AWSCFNAME="Route53"_
+	`AWSCFNAME="Route53"`
 
-	_AWSENV="Test"_
+	`AWSENV="Test"`
 
-	_aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json_
+	`aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json`
 
 3. To create SNS topic:
 
-	_AWSCFNAME="SNS"_
+	`AWSCFNAME="SNS"`
 
-	_AWSENV="Test"_
+	`AWSENV="Test"`
 
-	_aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json_
+	`aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json`
 
 4. Deploy Web Appication
 
-	_AWSCFNAME="WebApp"_
+	`AWSCFNAME="WebApp"`
 
-	_AWSENV="Test"_
+	`AWSENV="Test"`
 
-	_aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json --capabilities CAPABILITY_IAM**_
+	`aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json --capabilities CAPABILITY`IAM`
 
 
 if update needed (e.g. different url or some additional steps in deployments) simply run:
 
-	_aws cloudformation update-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json --capabilities CAPABILITY_IAM_
+	`aws cloudformation update-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json --capabilities CAPABILITY`IAM`
