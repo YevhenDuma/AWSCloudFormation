@@ -1,21 +1,21 @@
 Table of Contents
 ======
 
-![alt text](https://github.com/YevhenDuma/AWSCloudFormation/tree/master/companyNews#about "About")
+[About](https://github.com/YevhenDuma/AWSCloudFormation/tree/master/companyNews#about)
 
-![alt text](https://github.com/YevhenDuma/AWSCloudFormation/tree/master/companyNews#architectual-map "Architectual diagram")
-
-
-![alt text](https://github.com/YevhenDuma/AWSCloudFormation/tree/master/companyNews#assumptions "Assumptions")
+[Architectual diagram](https://github.com/YevhenDuma/AWSCloudFormation/tree/master/companyNews#architectual-map)
 
 
-![alt text](https://github.com/YevhenDuma/AWSCloudFormation/tree/master/companyNews#decisions "Decisions")
+[Assumptions](https://github.com/YevhenDuma/AWSCloudFormation/tree/master/companyNews#assumptions)
 
 
-![alt text](http://github.com/YevhenDuma/AWSCloudFormation/tree/master/companyNews#expected-result "Expected result")
+[Decisions](https://github.com/YevhenDuma/AWSCloudFormation/tree/master/companyNews#decisions)
 
 
-![alt text](https://github.com/YevhenDuma/AWSCloudFormation/tree/master/companyNews#result "Result")
+[Expected result](http://github.com/YevhenDuma/AWSCloudFormation/tree/master/companyNews#expected-result)
+
+
+[Result](https://github.com/YevhenDuma/AWSCloudFormation/tree/master/companyNews#result)
 
 
 
@@ -96,29 +96,29 @@ To create Test environment, run next commands from folder with templates and par
 
 2. To create Route53 hosted zone:
 
-	**AWSCFNAME="Route53"
+	_AWSCFNAME="Route53"_
 
-	AWSENV="Test"
+	_AWSENV="Test"_
 
-	aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json**
+	_aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json_
 
 3. To create SNS topic:
 
-	**AWSCFNAME="SNS"
+	_AWSCFNAME="SNS"_
 
-	AWSENV="Test"
+	_AWSENV="Test"_
 
-	aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json**
+	_aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json_
 
 4. Deploy Web Appication
 
-	**AWSCFNAME="WebApp"
+	_AWSCFNAME="WebApp"_
 
-	AWSENV="Test"
+	_AWSENV="Test"_
 
-	aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json --capabilities CAPABILITY_IAM**
+	_aws cloudformation create-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json --capabilities CAPABILITY_IAM**_
 
 
-if update needed (e.g. different url. some additional steps in deployments) simply run:
+if update needed (e.g. different url or some additional steps in deployments) simply run:
 
-	**aws cloudformation update-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json --capabilities CAPABILITY_IAM**
+	_aws cloudformation update-stack --stack-name ${AWSCFNAME}-${AWSENV} --template-body file://./${AWSCFNAME}-companyNews.json --parameters file://./${AWSCFNAME}-companyNews-${AWSENV}-parameters.json --capabilities CAPABILITY_IAM_
